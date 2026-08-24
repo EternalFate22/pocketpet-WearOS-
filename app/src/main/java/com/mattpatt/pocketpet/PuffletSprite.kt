@@ -8,8 +8,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.imageResource
-import kotlin.math.sin
-
 /**
  * Renders Pufflet from "Pufflet Animation Assets v2" - real hand-authored
  * frame sequences (256x256, uniform canvas) rather than a layered rig or a
@@ -49,57 +47,84 @@ fun PuffletSprite(
     modifier: Modifier = Modifier
 ) {
     val idleFrames = listOf(
-        ImageBitmap.imageResource(R.drawable.sprite_idle_01),
-        ImageBitmap.imageResource(R.drawable.sprite_idle_02),
-        ImageBitmap.imageResource(R.drawable.sprite_idle_03),
-        ImageBitmap.imageResource(R.drawable.sprite_idle_04),
-        ImageBitmap.imageResource(R.drawable.sprite_idle_05),
-        ImageBitmap.imageResource(R.drawable.sprite_idle_06)
-    )
-    val affectionFrames = listOf(
-        ImageBitmap.imageResource(R.drawable.sprite_affection_01),
-        ImageBitmap.imageResource(R.drawable.sprite_affection_02),
-        ImageBitmap.imageResource(R.drawable.sprite_affection_03),
-        ImageBitmap.imageResource(R.drawable.sprite_affection_04),
-        ImageBitmap.imageResource(R.drawable.sprite_affection_05),
-        ImageBitmap.imageResource(R.drawable.sprite_affection_06),
-        ImageBitmap.imageResource(R.drawable.sprite_affection_07)
-    )
+        R.drawable.pufflet_idle_01, R.drawable.pufflet_idle_02,
+        R.drawable.pufflet_idle_03, R.drawable.pufflet_idle_04,
+        R.drawable.pufflet_idle_05, R.drawable.pufflet_idle_06,
+        R.drawable.pufflet_idle_07, R.drawable.pufflet_idle_08,
+        R.drawable.pufflet_idle_09
+    ).map { resourceId -> ImageBitmap.imageResource(resourceId) }
+    val walkFrames = listOf(
+        R.drawable.pufflet_walk_01, R.drawable.pufflet_walk_02,
+        R.drawable.pufflet_walk_03, R.drawable.pufflet_walk_04,
+        R.drawable.pufflet_walk_05, R.drawable.pufflet_walk_06,
+        R.drawable.pufflet_walk_07
+    ).map { resourceId -> ImageBitmap.imageResource(resourceId) }
+    val eatFrames = listOf(
+        R.drawable.pufflet_eat_01, R.drawable.pufflet_eat_02,
+        R.drawable.pufflet_eat_03, R.drawable.pufflet_eat_04,
+        R.drawable.pufflet_eat_05, R.drawable.pufflet_eat_06,
+        R.drawable.pufflet_eat_07, R.drawable.pufflet_eat_08,
+        R.drawable.pufflet_eat_09
+    ).map { resourceId -> ImageBitmap.imageResource(resourceId) }
     val sleepFrames = listOf(
-        ImageBitmap.imageResource(R.drawable.sprite_sleep_a),
-        ImageBitmap.imageResource(R.drawable.sprite_sleep_b)
-    )
-    val groomOverlayFrames = listOf(
-        ImageBitmap.imageResource(R.drawable.sprite_groom_overlay_01),
-        ImageBitmap.imageResource(R.drawable.sprite_groom_overlay_02),
-        ImageBitmap.imageResource(R.drawable.sprite_groom_overlay_03),
-        ImageBitmap.imageResource(R.drawable.sprite_groom_overlay_04),
-        ImageBitmap.imageResource(R.drawable.sprite_groom_overlay_05),
-        ImageBitmap.imageResource(R.drawable.sprite_groom_overlay_06),
-        ImageBitmap.imageResource(R.drawable.sprite_groom_overlay_07),
-        ImageBitmap.imageResource(R.drawable.sprite_groom_overlay_08)
-    )
+        R.drawable.pufflet_sleep_01, R.drawable.pufflet_sleep_02,
+        R.drawable.pufflet_sleep_03, R.drawable.pufflet_sleep_04,
+        R.drawable.pufflet_sleep_05, R.drawable.pufflet_sleep_06,
+        R.drawable.pufflet_sleep_07
+    ).map { resourceId -> ImageBitmap.imageResource(resourceId) }
+    val playFrames = listOf(
+        R.drawable.pufflet_play_01, R.drawable.pufflet_play_02,
+        R.drawable.pufflet_play_03, R.drawable.pufflet_play_04,
+        R.drawable.pufflet_play_05, R.drawable.pufflet_play_06,
+        R.drawable.pufflet_play_07, R.drawable.pufflet_play_08
+    ).map { resourceId -> ImageBitmap.imageResource(resourceId) }
+    val sitFrames = listOf(
+        R.drawable.pufflet_sit_01, R.drawable.pufflet_sit_02,
+        R.drawable.pufflet_sit_03, R.drawable.pufflet_sit_04,
+        R.drawable.pufflet_sit_05, R.drawable.pufflet_sit_06,
+        R.drawable.pufflet_sit_07, R.drawable.pufflet_sit_08,
+        R.drawable.pufflet_sit_09
+    ).map { resourceId -> ImageBitmap.imageResource(resourceId) }
+    val hitFrames = listOf(
+        R.drawable.pufflet_hit_01, R.drawable.pufflet_hit_02,
+        R.drawable.pufflet_hit_03, R.drawable.pufflet_hit_04,
+        R.drawable.pufflet_hit_05, R.drawable.pufflet_hit_06,
+        R.drawable.pufflet_hit_07, R.drawable.pufflet_hit_08
+    ).map { resourceId -> ImageBitmap.imageResource(resourceId) }
+    val happyFrames = listOf(
+        R.drawable.pufflet_happy_01, R.drawable.pufflet_happy_02,
+        R.drawable.pufflet_happy_03, R.drawable.pufflet_happy_04,
+        R.drawable.pufflet_happy_05, R.drawable.pufflet_happy_06,
+        R.drawable.pufflet_happy_07, R.drawable.pufflet_happy_08
+    ).map { resourceId -> ImageBitmap.imageResource(resourceId) }
+    val expressionFrames = listOf(
+        R.drawable.pufflet_expressions_01, R.drawable.pufflet_expressions_02,
+        R.drawable.pufflet_expressions_03, R.drawable.pufflet_expressions_04,
+        R.drawable.pufflet_expressions_05, R.drawable.pufflet_expressions_06,
+        R.drawable.pufflet_expressions_07, R.drawable.pufflet_expressions_08,
+        R.drawable.pufflet_expressions_09
+    ).map { resourceId -> ImageBitmap.imageResource(resourceId) }
 
-    val sleepy = visualState == VisualPuffletState.SLEEPY || action == Action.SLEEP
+    val frameSet = when {
+        action == Action.FEED -> eatFrames
+        action == Action.PLAY -> playFrames
+        action == Action.PET -> happyFrames
+        action == Action.GROOM -> sitFrames
+        action == Action.SLEEP || visualState == VisualPuffletState.SLEEPY -> sleepFrames
+        visualState == VisualPuffletState.HAPPY || visualState == VisualPuffletState.AFFECTIONATE -> happyFrames
+        visualState == VisualPuffletState.EXCITED -> walkFrames
+        visualState == VisualPuffletState.SICK || visualState == VisualPuffletState.WEAK ||
+            visualState == VisualPuffletState.CRITICAL -> hitFrames
+        visualState == VisualPuffletState.SAD -> sitFrames
+        visualState == VisualPuffletState.HUNGRY || visualState == VisualPuffletState.DIRTY ||
+            visualState == VisualPuffletState.ANGRY -> expressionFrames
+        else -> idleFrames
+    }
 
-    val baseFrame = when {
-        // One-shot: plays across the Pet action's own ~950ms actionProgress
-        // window, same clock the rest of the app already uses for actions.
-        action == Action.PET -> {
-            val index = (actionProgress * (affectionFrames.size - 1))
-                .toInt().coerceIn(0, affectionFrames.size - 1)
-            affectionFrames[index]
-        }
-        // Slow alternation between the two clean sleep frames, timed off
-        // the same shared idlePhase clock as everything else's idle motion.
-        sleepy -> {
-            val index = if (sin(idlePhase * Math.PI * 2.0) >= 0.0) 0 else 1
-            sleepFrames[index]
-        }
-        else -> {
-            val index = (idlePhase * idleFrames.size).toInt().coerceIn(0, idleFrames.size - 1)
-            idleFrames[index]
-        }
+    val baseFrame = if (action == Action.IDLE) {
+        frameSet[(idlePhase * frameSet.size).toInt() % frameSet.size]
+    } else {
+        frameSet[(actionProgress * (frameSet.size - 1)).toInt().coerceIn(0, frameSet.size - 1)]
     }
 
     Box(modifier = modifier) {
@@ -109,15 +134,5 @@ fun PuffletSprite(
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Fit
         )
-        if (action == Action.GROOM) {
-            val index = (actionProgress * (groomOverlayFrames.size - 1))
-                .toInt().coerceIn(0, groomOverlayFrames.size - 1)
-            Image(
-                bitmap = groomOverlayFrames[index],
-                contentDescription = null,
-                modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.Fit
-            )
-        }
     }
 }
